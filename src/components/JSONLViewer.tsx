@@ -12,7 +12,7 @@ const JSONLViewer: React.FC<JSONLViewerProps> = ({ data, onSelectBbox, selectedB
   const filteredData = useMemo(() => data.filter(item => item.page === currentPage), [data, currentPage])
 
   return (
-      <div className="jsonl-viewer overflow-auto h-[600px] border border-gray-300 rounded">
+      <div className="jsonl-viewer overflow-auto h-[1200px] border border-gray-300 rounded">
         <table className="w-full">
           <thead>
           <tr className="bg-gray-100">
