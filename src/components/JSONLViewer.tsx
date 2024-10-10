@@ -16,11 +16,11 @@ const JSONLViewer: React.FC<JSONLViewerProps> = ({ data, onSelectBbox, selectedB
         <table className="w-full">
           <thead>
           <tr className="bg-gray-100">
-            <th className="px-2 py-2">Page No</th>
-            <th className="px-2 py-2">Seq No</th>
-            <th className="px-2 py-2">Sentence</th>
-            <th className="px-2 py-2">Detected Type</th>
-            <th className="px-2 py-2">Type</th>
+            <th className="w-1/8 px-2 py-2">Page No</th>
+            <th className="w-1/8 px-2 py-2">Seq No</th>
+            <th className="w-4/8 px-2 py-2">Sentence</th>
+            <th className="w-1/8 px-2 py-2">Detected Type</th>
+            <th className="w-1/8 px-2 py-2">Type</th>
           </tr>
           </thead>
           <tbody>
@@ -50,11 +50,11 @@ const JSONLRow: React.FC<JSONLRowProps> = React.memo(({ item, isSelected, onSele
           className={`cursor-pointer hover:bg-gray-100 ${isSelected ? 'bg-yellow-200' : ''}`}
           onClick={() => onSelect(item)}
       >
-        <td className="border px-2 py-2">{item.page}</td>
-        <td className="border px-2 py-2">{item.seq_no}</td>
-        <td className="border px-2 py-2">{item.sentence}</td>
-        <td className="border px-2 py-2">{item.detected_type}</td>
-        <td className="border px-2 py-2">{item.type}</td>
+        <td className="border w-1/8 px-2 py-2">{item.page}</td>
+        <td className="border w-1/8 px-2 py-2">{item.seq_no}</td>
+        <td className="border w-4/8 px-2 py-2">{item.sentence}</td>
+        <td className="border w-1/8 px-2 py-2">{item.detected_type}</td>
+        <td className="border w-1/8 px-2 py-2">{item.type}</td>
       </tr>
   )
 })
