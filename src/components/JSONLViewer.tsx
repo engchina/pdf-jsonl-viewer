@@ -12,15 +12,15 @@ const JSONLViewer: React.FC<JSONLViewerProps> = ({ data, onSelectBbox, selectedB
   const filteredData = useMemo(() => data.filter(item => item.page === currentPage), [data, currentPage])
 
   return (
-      <div className="jsonl-viewer overflow-auto h-[1200px] border border-gray-300 rounded">
+      <div className="jsonl-viewer overflow-auto h-[800px] border border-gray-300 rounded">
         <table className="w-full">
           <thead>
           <tr className="bg-gray-100">
             <th className="px-2 py-2">Page No</th>
             <th className="px-2 py-2">Seq No</th>
-            <th className="px-4 py-2">Sentence</th>
-            <th className="px-2 py-2"> Type</th>
+            <th className="px-2 py-2">Sentence</th>
             <th className="px-2 py-2">Detected Type</th>
+            <th className="px-2 py-2">Type</th>
           </tr>
           </thead>
           <tbody>
@@ -52,9 +52,9 @@ const JSONLRow: React.FC<JSONLRowProps> = React.memo(({ item, isSelected, onSele
       >
         <td className="border px-2 py-2">{item.page}</td>
         <td className="border px-2 py-2">{item.seq_no}</td>
-        <td className="border px-4 py-2">{item.sentence}</td>
-        <td className="border px-2 py-2">{item.type}</td>
+        <td className="border px-2 py-2">{item.sentence}</td>
         <td className="border px-2 py-2">{item.detected_type}</td>
+        <td className="border px-2 py-2">{item.type}</td>
       </tr>
   )
 })
