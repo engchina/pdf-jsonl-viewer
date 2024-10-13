@@ -1,10 +1,14 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import { BboxData } from '../types'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+
+// Set the CMap URL for non-Latin characters
+const cMapUrl = 'https://unpkg.com/pdfjs-dist/cmaps/';
+const cMapPacked = true;
 
 interface PDFViewerProps {
     file: File
@@ -20,6 +24,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, o
     const [pdfDimensions, setPdfDimensions] = useState<{ width: number; height: number } | null>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const pageRef = useRef<HTMLDivElement>(null)
+
+    // Memoize the options object to prevent unnecessary re-renders
+    const options = useMemo(() => ({
+        cMapUrl,
+        cMapPacked,
+        standardFontDataUrl: 'https://unpkg.com/pdfjs-dist/standard_fonts/'
+    }), [])
 
     const onDocumentLoadSuccess = useCallback(({ numPages: loadedPages }: { numPages: number }) => {
         onPageChange(1) // Reset to first page when a new document is loaded
@@ -102,6 +113,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, o
                     file={file}
                     onLoadSuccess={onDocumentLoadSuccess}
                     onLoadError={(error: Error) => console.error('Error loading PDF:', error)}
+                    options={options}
                 >
                     <div ref={pageRef} style={{ position: 'relative' }}>
                         <Page

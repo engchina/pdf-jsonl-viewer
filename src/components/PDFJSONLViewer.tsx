@@ -12,6 +12,7 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({ pdfFile, jsonlData }) =
     const [pageNumber, setPageNumber] = useState(1)
     const [numPages, setNumPages] = useState<number | null>(null)
     const [selectedBbox, setSelectedBbox] = useState<BboxData | null>(null)
+    const [goToPage, setGoToPage] = useState('')
 
     useEffect(() => {
         // Set the initial number of pages when the component mounts
@@ -30,6 +31,15 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({ pdfFile, jsonlData }) =
         setPageNumber(bbox.page)
     }
 
+    const handleGoToPage = (e: React.FormEvent) => {
+        e.preventDefault()
+        const page = parseInt(goToPage, 10)
+        if (!isNaN(page) && page >= 1 && page <= (numPages || 1)) {
+            setPageNumber(page)
+            setGoToPage('')
+        }
+    }
+
     return (
         <div className="flex flex-col h-screen">
             <div className="flex justify-between items-center p-4 border-t">
@@ -43,6 +53,23 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({ pdfFile, jsonlData }) =
                 <p>
                     Page {pageNumber} of {numPages}
                 </p>
+                <form onSubmit={handleGoToPage} className="flex items-center">
+                    <input
+                        type="number"
+                        value={goToPage}
+                        onChange={(e) => setGoToPage(e.target.value)}
+                        min="1"
+                        max={numPages || 1}
+                        className="w-32 px-2 py-1 border rounded mr-2"
+                        placeholder="Page"
+                    />
+                    <button
+                        type="submit"
+                        className="px-8 py-2 bg-green-500 text-white rounded"
+                    >
+                        Go
+                    </button>
+                </form>
                 <button
                     onClick={() => handlePageChange(Math.min(pageNumber + 1, numPages || pageNumber))}
                     disabled={pageNumber >= (numPages || 0)}
@@ -81,6 +108,23 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({ pdfFile, jsonlData }) =
                 <p>
                     Page {pageNumber} of {numPages}
                 </p>
+                <form onSubmit={handleGoToPage} className="flex items-center">
+                    <input
+                        type="number"
+                        value={goToPage}
+                        onChange={(e) => setGoToPage(e.target.value)}
+                        min="1"
+                        max={numPages || 1}
+                        className="w-32 px-2 py-1 border rounded mr-2"
+                        placeholder="Page"
+                    />
+                    <button
+                        type="submit"
+                        className="px-8 py-2 bg-green-500 text-white rounded"
+                    >
+                        Go
+                    </button>
+                </form>
                 <button
                     onClick={() => handlePageChange(Math.min(pageNumber + 1, numPages || pageNumber))}
                     disabled={pageNumber >= (numPages || 0)}
