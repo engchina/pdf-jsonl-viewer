@@ -17,12 +17,13 @@ function App() {
 
     const handleJsonlUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0]
-            setJsonlFile(file)
-            const reader = new FileReader()
+            const file = event.target.files[0];
+            setJsonlFile(file);
+
+            const reader = new FileReader();
             reader.onload = (e) => {
-                const content = e.target?.result as string
-                const lines = content.split('\n').filter(line => line.trim() !== '')
+                const content = e.target?.result as string;
+                const lines = content.split('\n').filter(line => line.trim() !== '');
                 lines.forEach((line, index) => {
                     try {
                         const parsedLine = JSON.parse(line);
@@ -35,13 +36,16 @@ function App() {
                     }
                 });
 
-                const parsedData = lines.map(line => JSON.parse(line))
-                console.table(parsedData)
-                setJsonlData(parsedData)
-            }
-            reader.readAsText(file)
+                const parsedData = lines.map(line => JSON.parse(line));
+                console.table(parsedData);
+                setJsonlData(parsedData);
+            };
+            reader.readAsText(file);
+
+            // 重置文件输入的值，允许用户重新选择相同文件
+            event.target.value = '';
         }
-    }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
