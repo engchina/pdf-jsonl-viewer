@@ -16,6 +16,7 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({pdfFile, jsonlData, page
     const [goToPage, setGoToPage] = useState('')
     const [pdfPageHeight, setPdfPageHeight] = useState(0)
 
+    console.log('PDFJSONLViewer pageNumber: ', pageNumber)
     useEffect(() => {
         // Set the initial number of pages when the component mounts
         if (jsonlData.length > 0) {
@@ -27,6 +28,7 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({pdfFile, jsonlData, page
 
     const handleSelectBbox = (bbox: BboxData) => {
         setSelectedBbox(bbox)
+        console.log('handleSelectBbox bbox.page: ', bbox.page)
         onPageChange(bbox.page)
     }
 
@@ -34,6 +36,7 @@ const PDFJSONLViewer: React.FC<PDFJSONLViewerProps> = ({pdfFile, jsonlData, page
         e.preventDefault()
         const page = parseInt(goToPage, 10)
         if (!isNaN(page) && page >= 1 && page <= (numPages || 1)) {
+            console.log('handleGoToPage bbox.page: ', page)
             onPageChange(page)
             setGoToPage(String(page))
         }

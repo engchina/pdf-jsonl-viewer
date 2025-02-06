@@ -13,11 +13,13 @@ function App() {
 
     const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            setPdfFile(event.target.files[0])
+            const file = event.target.files[0]
+            setPdfFile(file)
             setIsBothUploaded(!!jsonlFile)
             setPageNumber(1)
             // 重置文件输入的值，允许用户重新选择相同文件
             event.target.value = ''
+            console.log('handlePdfUpload pageNumber: ', pageNumber)
         }
     }
 
@@ -27,6 +29,7 @@ function App() {
             setJsonlFile(file)
             setIsBothUploaded(!!pdfFile)
             setPageNumber(1)
+            console.log('handleJsonlUpload pageNumber: ', pageNumber)
 
             const reader = new FileReader()
             reader.onload = (e) => {
@@ -35,7 +38,7 @@ function App() {
                 lines.forEach((line, index) => {
                     try {
                         const parsedLine = JSON.parse(line)
-                        console.log(`Line ${index + 1}:`, parsedLine)
+                        // console.log(`Line ${index + 1}:`, parsedLine)
                         if (!parsedLine.detected_type) {
                             console.warn(`Line ${index + 1} is missing detected_type`)
                         }
@@ -45,7 +48,7 @@ function App() {
                 })
 
                 const parsedData = lines.map(line => JSON.parse(line))
-                console.table(parsedData)
+                // console.table(parsedData)
                 setJsonlData(parsedData)
             }
             reader.readAsText(file)

@@ -39,5 +39,6 @@ export const usePdfRendering = () => {
         }
     }, [])
 
+    console.log('usePdfRendering pageNumber: ', pageNumber)
     return {pageNumber, setPageNumber, renderPage}
 }

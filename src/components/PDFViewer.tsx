@@ -43,7 +43,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
     const onDocumentLoadSuccess = useCallback(({numPages: loadedPages}: { numPages: number }) => {
         onPageChange(1) // Reset to first page when a new document is loaded
         if (loadedPages !== numPages) {
-            onPageChange(loadedPages) // Update the number of pages in the parent component
+            // onPageChange(loadedPages) // Update the number of pages in the parent component
+            onPageChange(1) // Update the number of pages in the parent component
         }
     }, [onPageChange, numPages])
 
