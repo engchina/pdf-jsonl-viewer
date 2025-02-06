@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
-import { Document, Page, pdfjs } from 'react-pdf'
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import { BboxData } from '../types'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Document, Page, pdfjs} from 'react-pdf'
+import 'react-pdf/dist/esm/Page/TextLayer.css'
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
+import {BboxData} from '../types'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
 // Set the CMap URL for non-Latin characters
-const cMapUrl = 'https://unpkg.com/pdfjs-dist/cmaps/';
-const cMapPacked = true;
+const cMapUrl = 'https://unpkg.com/pdfjs-dist/cmaps/'
+const cMapPacked = true
 
 interface PDFViewerProps {
     file: File
@@ -16,9 +16,17 @@ interface PDFViewerProps {
     pageNumber: number
     onPageChange: (newPage: number) => void
     numPages: number
+    onPageHeightChange: (height: number) => void
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, onPageChange, numPages }) => {
+const PDFViewer: React.FC<PDFViewerProps> = ({
+                                                 file,
+                                                 selectedBbox,
+                                                 pageNumber,
+                                                 onPageChange,
+                                                 numPages,
+                                                 onPageHeightChange
+                                             }) => {
     const [pageWidth, setPageWidth] = useState<number>(0)
     const [pageHeight, setPageHeight] = useState<number>(0)
     const [pdfDimensions, setPdfDimensions] = useState<{ width: number; height: number } | null>(null)
@@ -32,7 +40,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, o
         standardFontDataUrl: 'https://unpkg.com/pdfjs-dist/standard_fonts/'
     }), [])
 
-    const onDocumentLoadSuccess = useCallback(({ numPages: loadedPages }: { numPages: number }) => {
+    const onDocumentLoadSuccess = useCallback(({numPages: loadedPages}: { numPages: number }) => {
         onPageChange(1) // Reset to first page when a new document is loaded
         if (loadedPages !== numPages) {
             onPageChange(loadedPages) // Update the number of pages in the parent component
@@ -55,10 +63,12 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, o
 
     // Store page height and PDF dimensions after render
     const onPageLoadSuccess = useCallback((page: any) => {
-        const viewport = page.getViewport({ scale: 1 })
-        setPdfDimensions({ width: viewport.width, height: viewport.height })
-        setPageHeight(page.height * (pageWidth / page.width))
-    }, [pageWidth])
+        const viewport = page.getViewport({scale: 1})
+        setPdfDimensions({width: viewport.width, height: viewport.height})
+        const newPageHeight = page.height * (pageWidth / page.width)
+        setPageHeight(newPageHeight)
+        onPageHeightChange(newPageHeight)
+    }, [pageWidth, onPageHeightChange])
 
     // Scroll to highlighted text
     useEffect(() => {
@@ -115,7 +125,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, selectedBbox, pageNumber, o
                     onLoadError={(error: Error) => console.error('Error loading PDF:', error)}
                     options={options}
                 >
-                    <div ref={pageRef} style={{ position: 'relative' }}>
+                    <div ref={pageRef} style={{position: 'relative'}}>
                         <Page
                             key={`page_${pageNumber}`}
                             pageNumber={pageNumber}

@@ -1,43 +1,43 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 export const usePdfRendering = () => {
-  const [pageNumber, setPageNumberState] = useState(1)
-  const pageNumberRef = useRef(pageNumber)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const isMountedRef = useRef(true)
+    const [pageNumber, setPageNumberState] = useState(1)
+    const pageNumberRef = useRef(pageNumber)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const isMountedRef = useRef(true)
 
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false
-    }
-  }, [])
+    useEffect(() => {
+        return () => {
+            isMountedRef.current = false
+        }
+    }, [])
 
-  const setPageNumber = useCallback((newPageNumber: number) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    timeoutRef.current = setTimeout(() => {
-      if (isMountedRef.current) {
-        setPageNumberState(newPageNumber)
-        pageNumberRef.current = newPageNumber
-      }
-    }, 300)
-  }, [])
+    const setPageNumber = useCallback((newPageNumber: number) => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+        }
+        timeoutRef.current = setTimeout(() => {
+            if (isMountedRef.current) {
+                setPageNumberState(newPageNumber)
+                pageNumberRef.current = newPageNumber
+            }
+        }, 300)
+    }, [])
 
-  const renderPage = useCallback((pageComponent: React.ReactNode) => {
-    return {
-      key: pageNumberRef.current,
-      children: pageComponent
-    }
-  }, [])
+    const renderPage = useCallback((pageComponent: React.ReactNode) => {
+        return {
+            key: pageNumberRef.current,
+            children: pageComponent
+        }
+    }, [])
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [])
 
-  return { pageNumber, setPageNumber, renderPage }
+    return {pageNumber, setPageNumber, renderPage}
 }

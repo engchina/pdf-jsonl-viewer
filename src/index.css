@@ -4,34 +4,34 @@
 
 /* Add react-pdf TextLayer styles */
 .react-pdf__Page__textContent {
-  border: 1px solid darkgrey;
-  box-shadow: 5px 5px 5px 1px #ccc;
-  border-radius: 5px;
+    border: 1px solid darkgrey;
+    box-shadow: 5px 5px 5px 1px #ccc;
+    border-radius: 5px;
 }
 
 .react-pdf__Page__annotations.annotationLayer {
-  padding: 20px;
+    padding: 20px;
 }
 
 .react-pdf__Page__canvas {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 /* Ensure text layer is on top of the PDF content */
 .react-pdf__Page__textContent {
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  opacity: 0.2;
-  line-height: 1.0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 0.2;
+    line-height: 1.0;
 }
 
 .react-pdf__Page__textContent > span {
-  color: transparent;
-  position: absolute;
-  white-space: pre;
-  cursor: text;
-  transform-origin: 0% 0%;
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
 }
